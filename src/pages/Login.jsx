@@ -18,7 +18,7 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, formData);
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, formData);
             localStorage.setItem('token', res.data.token);
             navigate('/home');
         } catch (err) {
