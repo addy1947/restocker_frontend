@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
             if (storedToken) {
                 try {
                     // Verify token with backend
-                    const response = await axios.get('http://localhost:5000/api/auth/verify', {
+                    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/verify`, {
                         headers: {
                             Authorization: `Bearer ${storedToken}`
                         }
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     // Login function
     const login = async (email, password) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
                 email,
                 password
             });
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
             setToken(newToken);
 
             // Get user data
-            const userResponse = await axios.get('http://localhost:5000/api/auth/me', {
+            const userResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/me`, {
                 headers: {
                     Authorization: `Bearer ${newToken}`
                 }
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
     // Signup function
     const signup = async (name, email, password) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/signup', {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signup`, {
                 name,
                 email,
                 password
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
             setToken(newToken);
 
             // Get user data
-            const userResponse = await axios.get('http://localhost:5000/api/auth/me', {
+            const userResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/me`, {
                 headers: {
                     Authorization: `Bearer ${newToken}`
                 }
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             // Call logout endpoint to clear server-side session
-            await axios.post('http://localhost:5000/api/auth/logout', {}, {
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

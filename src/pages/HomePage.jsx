@@ -18,7 +18,7 @@ const HomePage = () => {
   const fetchProducts = async () => {
     try {
       if (!_id) return;
-      const res = await axios.get(`http://localhost:5000/${_id}/product`);
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/${_id}/product`);
       setProducts(res.data);
     } catch (error) {
       console.error("Failed to fetch products:", error.message);

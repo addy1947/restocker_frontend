@@ -18,7 +18,7 @@ const InStock = () => {
     useEffect(() => {
         const fetchStocks = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/${_id}/instock`)
+                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/${_id}/instock`)
                 if (res.data.stockWithProducts) {
                     // Flatten the stock data with product information
                     const flattenedStocks = []
@@ -202,7 +202,7 @@ const InStock = () => {
         const fetchData = async () => {
             setLoading(true)
             try {
-                const res = await axios.get(`http://localhost:5000/${_id}/instock`)
+                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/${_id}/instock`)
                 if (res.data.stockWithProducts) {
                     const flattenedStocks = []
                     res.data.stockWithProducts.forEach(stockGroup => {

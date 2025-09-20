@@ -36,7 +36,7 @@ const AddProduct = ({ onClose }) => {
 
         try {
             const token = getToken();
-            await axios.post(`http://localhost:5000/${_id}/product/add`, formData, {
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/${_id}/product/add`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

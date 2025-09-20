@@ -51,13 +51,13 @@ export default function FloatingChat() {
         setLoading(true);
         try {
             if (productId) {
-                const res = await axios.post('http://localhost:5000/chat/ai', { message: trimmed, userId: _id, productId });
+                const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/chat/ai`, { message: trimmed, userId: _id, productId });
                 const botText = res?.data?.reply ?? res?.data?.message ?? (typeof res?.data === 'string' ? res.data : JSON.stringify(res?.data));
                 const botMsg = { id: Date.now() + Math.random(), from: 'bot', text: botText };
                 setMessages((s) => [...s, botMsg]);
             }
             else {
-                const res = await axios.post('http://localhost:5000/chat/ai', { message: trimmed, userId: _id });
+                const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/chat/ai`, { message: trimmed, userId: _id });
                 // Try a few common response shapes
                 const botText = res?.data?.reply ?? res?.data?.message ?? (typeof res?.data === 'string' ? res.data : JSON.stringify(res?.data));
                 const botMsg = { id: Date.now() + Math.random(), from: 'bot', text: botText };

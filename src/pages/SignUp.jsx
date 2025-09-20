@@ -19,7 +19,7 @@ const Signup = () => {
         setError('');
         try {
             // 1. Signup + Auto login (returns token directly)
-            const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signup`, formData);
             localStorage.setItem('token', res.data.token);
 
             // 2. Redirect

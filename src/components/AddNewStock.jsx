@@ -29,7 +29,7 @@ const AddNewStock = ({ onClose, productId }) => {
 
         try {
             
-            await axios.post(`http://localhost:5000/${_id}/product/${productId}/stock/add`, formData)
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/${_id}/product/${productId}/stock/add`, formData)
 
             setSuccess('Stock added successfully!');
             setFormData({ expiryDate: '', qty: '' });

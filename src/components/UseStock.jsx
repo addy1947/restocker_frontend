@@ -26,7 +26,7 @@ const UseStock = ({ isOpen, onClose, selectedStock, onStockUpdated }) => {
 
             setIsLoading(true)
 
-            await axios.post(`http://localhost:5000/${_id}/product/${productId}/stock/use`, {
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/${_id}/product/${productId}/stock/use`, {
                 usedQty: parseInt(usedQty),
                 stockId: selectedStock._id
             })
