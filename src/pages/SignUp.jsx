@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
 const Signup = () => {
@@ -7,6 +8,7 @@ const Signup = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { signup } = useAuth();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -18,12 +20,12 @@ const Signup = () => {
         setLoading(true);
         setError('');
         try {
-            // 1. Signup + Auto login (returns token directly)
-            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/signup`, formData);
-            localStorage.setItem('token', res.data.token);
-
-            // 2. Redirect
-            navigate('/home');
+            const result = await signup(formData.name, formData.email, formData.password);
+            if (result.success) {
+                navigate('/home');
+            } else {
+                setError(result.error || 'Signup failed');
+            }
         } catch (err) {
             setError(err.response?.data?.error || 'Signup failed');
         } finally {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
 const Login = () => {
@@ -7,6 +8,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -18,9 +20,12 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, formData);
-            localStorage.setItem('token', res.data.token);
-            navigate('/home');
+            const result = await login(formData.email, formData.password);
+            if (result.success) {
+                navigate('/home');
+            } else {
+                setError(result.error || 'Login failed');
+            }
         } catch (err) {
             setError(err.response?.data?.error || 'Login failed');
         } finally {
