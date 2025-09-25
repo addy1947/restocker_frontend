@@ -22,6 +22,8 @@ const InStock = () => {
                 setIsRefreshing(true)
             }
             const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/${_id}/instock`)
+            console.log('API Response:', res.data) // Debug log
+            
             if (res.data.stockWithProducts) {
                 // Flatten the stock data with product information
                 const flattenedStocks = []
@@ -34,9 +36,11 @@ const InStock = () => {
                     })
                 })
                 setStocks(flattenedStocks)
+                console.log('Flattened stocks:', flattenedStocks) // Debug log
             }
-            if (res.data.product && res.data.product.allProducts) {
-                setProducts(res.data.product.allProducts)
+            if (res.data.products) {
+                setProducts(res.data.products)
+                console.log('Products set:', res.data.products) // Debug log
             }
         } catch (err) {
             setError('Failed to fetch stock data')
@@ -65,7 +69,10 @@ const InStock = () => {
     }, [_id])
 
     const getProductName = (productId) => {
+        console.log('Looking for product with ID:', productId) // Debug log
+        console.log('Available products:', products) // Debug log
         const product = products.find(p => p._id === productId)
+        console.log('Found product:', product) // Debug log
         return product ? product.name : 'Unknown Product'
     }
 
