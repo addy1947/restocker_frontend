@@ -65,7 +65,31 @@ export default function FloatingChat() {
             }
         } catch (err) {
             console.error('Send message error', err);
-            const errMsg = { id: Date.now() + Math.random(), from: 'bot', text: 'Sorry — failed to contact the server.' };
+            
+            // Better error handling with more specific messages
+            let errorMessage = 'Sorry — failed to contact the server.';
+            
+            if (err.response) {
+                // Server responded with error status
+                const errorData = err.response.data;
+                if (errorData?.reply) {
+                    errorMessage = errorData.reply;
+                } else if (errorData?.error) {
+                    errorMessage = `Error: ${errorData.error}`;
+                } else if (errorData?.message) {
+                    errorMessage = `Error: ${errorData.message}`;
+                } else {
+                    errorMessage = `Server error: ${err.response.status}`;
+                }
+            } else if (err.request) {
+                // Network error
+                errorMessage = 'Network error — please check your connection.';
+            } else {
+                // Other error
+                errorMessage = `Error: ${err.message}`;
+            }
+            
+            const errMsg = { id: Date.now() + Math.random(), from: 'bot', text: errorMessage };
             setMessages((s) => [...s, errMsg]);
         } finally {
             setLoading(false);
