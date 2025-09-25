@@ -55,42 +55,57 @@ const UseStock = ({ isOpen, onClose, selectedStock, onStockUpdated }) => {
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Use Stock</h3>
+        <div className="fixed inset-0 backdrop-blur-[2px] flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-auto">
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 className="text-xl font-semibold text-gray-900">Use Stock</h2>
+                    <button
+                        onClick={handleClose}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                        disabled={isLoading}
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
 
-                <div className="mb-4">
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                {/* Form */}
+                <div className="p-6 space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                             Stock Details
                         </label>
-                        <div className="text-sm text-gray-600">
-                            <p>Expiry Date: {new Date(selectedStock.expiryDate).toLocaleDateString()}</p>
-                            <p>Available Quantity: <span className="font-bold text-green-600">{selectedStock.qty}</span></p>
+                        <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-600">
+                            <p><span className="font-medium">Expiry Date:</span> {new Date(selectedStock.expiryDate).toLocaleDateString()}</p>
+                            <p><span className="font-medium">Available Quantity:</span> <span className="font-bold text-green-600">{selectedStock.qty}</span></p>
                         </div>
                     </div>
 
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Quantity to Use
-                    </label>
-                    <input
-                        type="number"
-                        value={usedQty}
-                        onChange={(e) => setUsedQty(e.target.value)}
-                        placeholder="Enter quantity to use"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        min="1"
-                        max={selectedStock.qty}
-                        disabled={isLoading}
-                    />
-                    {usedQty && usedQty > selectedStock.qty && (
-                        <p className="text-red-500 text-xs mt-1">
-                            Quantity cannot exceed available stock ({selectedStock.qty})
-                        </p>
-                    )}
-                </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Quantity to Use
+                        </label>
+                        <input
+                            type="number"
+                            value={usedQty}
+                            onChange={(e) => setUsedQty(e.target.value)}
+                            placeholder="Enter quantity to use"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            min="1"
+                            max={selectedStock.qty}
+                            disabled={isLoading}
+                        />
+                        {usedQty && usedQty > selectedStock.qty && (
+                            <p className="text-red-500 text-xs mt-1">
+                                Quantity cannot exceed available stock ({selectedStock.qty})
+                            </p>
+                        )}
+                    </div>
 
-                <div className="flex justify-end space-x-3">
+                    {/* Action Buttons */}
+                    <div className="flex justify-end space-x-3 pt-4">
                     <button
                         onClick={handleClose}
                         disabled={isLoading}
@@ -115,6 +130,7 @@ const UseStock = ({ isOpen, onClose, selectedStock, onStockUpdated }) => {
                             'Use Stock'
                         )}
                     </button>
+                    </div>
                 </div>
             </div>
         </div>
