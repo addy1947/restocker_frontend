@@ -38,9 +38,9 @@ const InStock = () => {
                 setStocks(flattenedStocks)
                 console.log('Flattened stocks:', flattenedStocks) // Debug log
             }
-            if (res.data.products) {
-                setProducts(res.data.products)
-                console.log('Products set:', res.data.products) // Debug log
+            if (res.data.product && res.data.product.allProducts) {
+                setProducts(res.data.product.allProducts)
+                console.log('Products set:', res.data.product.allProducts) // Debug log
             }
         } catch (err) {
             setError('Failed to fetch stock data')
