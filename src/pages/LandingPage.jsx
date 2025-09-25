@@ -1,17 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ModernLogo from '../components/ModernLogo';
 
 const Landing_Page = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-400 via-white to-purple-400 font-sans overflow-hidden">
             {/* Navigation Header */}
             <nav className="flex items-center justify-between px-8 py-6 bg-white/80 backdrop-blur-sm border-b border-gray-100">
-                <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">R</span>
-                    </div>
-                    <span className="text-2xl font-bold text-gray-800">Restocker</span>
-                </div>
+                <ModernLogo size="default" showText={true} />
                 <div className="hidden md:flex items-center space-x-8">
                     <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors">Features</a>
                     <a href="#pricing" className="text-gray-600 hover:text-blue-600 transition-colors">Pricing</a>

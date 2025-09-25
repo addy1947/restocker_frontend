@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import ModernLogo from '../components/ModernLogo';
 
 const Signup = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -38,6 +39,9 @@ const Signup = () => {
             <div className="max-w-md w-full">
                 <div className="bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
                     <div className="text-center mb-8">
+                        <div className="flex justify-center mb-6">
+                            <ModernLogo size="large" showText={true} />
+                        </div>
                         <h1 className="text-3xl font-light text-gray-900 mb-2">
                             Create Account
                         </h1>
