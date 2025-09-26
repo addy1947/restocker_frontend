@@ -44,6 +44,34 @@ export default function FloatingChat() {
         const trimmed = text?.trim();
         if (!trimmed) return;
 
+        // Check if API URL is configured
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+        if (!apiBaseUrl) {
+            // Demo mode - provide a simple response
+            const demoResponses = [
+                "Hello! I'm the AI assistant for Restocker. I can help you with inventory management questions.",
+                "I can help you track your inventory, manage stock levels, and answer questions about your products.",
+                "To get started, try asking me about your inventory or how to manage stock levels.",
+                "I'm here to help with your restaurant inventory management needs!",
+                "You can ask me about product tracking, stock alerts, or inventory optimization."
+            ];
+            const randomResponse = demoResponses[Math.floor(Math.random() * demoResponses.length)];
+            const demoMsg = { id: Date.now() + Math.random(), from: 'bot', text: `🤖 Demo Mode: ${randomResponse}\n\nNote: Set VITE_API_BASE_URL to connect to the real AI backend.` };
+            setMessages((s) => [...s, demoMsg]);
+            return;
+        }
+
+        // Check if user is authenticated
+        if (!_id) {
+            const errorMsg = { 
+                id: Date.now() + Math.random(), 
+                from: 'bot', 
+                text: '⚠️ Please log in to use the AI assistant.' 
+            };
+            setMessages((s) => [...s, errorMsg]);
+            return;
+        }
+
         const userMsg = { id: Date.now() + Math.random(), from: 'user', text: trimmed };
         setMessages((s) => [...s, userMsg]);
         setInput('');
@@ -51,13 +79,13 @@ export default function FloatingChat() {
         setLoading(true);
         try {
             if (productId) {
-                const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/chat/ai`, { message: trimmed, userId: _id, productId });
+                const res = await axios.post(`${apiBaseUrl}/chat/ai`, { message: trimmed, userId: _id, productId });
                 const botText = res?.data?.reply ?? res?.data?.message ?? (typeof res?.data === 'string' ? res.data : JSON.stringify(res?.data));
                 const botMsg = { id: Date.now() + Math.random(), from: 'bot', text: botText };
                 setMessages((s) => [...s, botMsg]);
             }
             else {
-                const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/chat/ai`, { message: trimmed, userId: _id });
+                const res = await axios.post(`${apiBaseUrl}/chat/ai`, { message: trimmed, userId: _id });
                 // Try a few common response shapes
                 const botText = res?.data?.reply ?? res?.data?.message ?? (typeof res?.data === 'string' ? res.data : JSON.stringify(res?.data));
                 const botMsg = { id: Date.now() + Math.random(), from: 'bot', text: botText };
@@ -83,7 +111,7 @@ export default function FloatingChat() {
                 }
             } else if (err.request) {
                 // Network error
-                errorMessage = 'Network error — please check your connection.';
+                errorMessage = 'Network error — please check your connection and ensure the backend server is running.';
             } else {
                 // Other error
                 errorMessage = `Error: ${err.message}`;
