@@ -458,7 +458,7 @@ const InStock = () => {
                                                                                         <div className="flex justify-between">
                                                                                             <span className="text-gray-500">Last Activity:</span>
                                                                                             <span className="text-gray-700">
-                                                                                                {formatDate(stock.entry[stock.entry.length - 1].time)}
+                                                                                                {stock.entry[stock.entry.length - 1]?.time ? formatDate(stock.entry[stock.entry.length - 1].time) : 'N/A'}
                                                                                             </span>
                                                                                         </div>
 
@@ -467,8 +467,8 @@ const InStock = () => {
                                                                                             <div className="mt-1 space-y-1 max-h-16 overflow-y-auto">
                                                                                                 {stock.entry.slice(-2).reverse().map((entry, entryIndex) => (
                                                                                                     <div key={entryIndex} className="flex justify-between text-xs text-gray-600">
-                                                                                                        <span>{entry.type === 'add' ? 'Added' : 'Used'}: {entry.usedQty}</span>
-                                                                                                        <span>{formatDate(entry.time)}</span>
+                                                                                                        <span>{(entry?.type === 'add') ? 'Added' : 'Used'}: {entry?.usedQty || 0}</span>
+                                                                                                        <span>{entry?.time ? formatDate(entry.time) : 'N/A'}</span>
                                                                                                     </div>
                                                                                                 ))}
                                                                                             </div>
