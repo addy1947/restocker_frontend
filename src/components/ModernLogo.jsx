@@ -17,40 +17,31 @@ const ModernLogo = ({ size = 'default', showText = true, className = '' }) => {
 
   return (
     <div className={`flex items-center space-x-3 ${className}`}>
-      {/* Modern Logo Icon - Inventory/Box Design */}
+      {/* Modern Simple Logo Icon */}
       <div className={`${sizeClasses[size]} relative group`}>
-        {/* Main container with gradient background */}
-        <div className="w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-          {/* Inventory box icon */}
-          <div className="relative w-3/4 h-3/4">
-            {/* Main box */}
-            <div className="absolute inset-0 bg-white rounded-lg shadow-inner">
-              {/* Box lines */}
-              <div className="absolute top-1 left-1 right-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-              <div className="absolute top-2 left-1 right-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-              <div className="absolute top-3 left-1 right-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-              
-              {/* Vertical lines */}
-              <div className="absolute top-1 bottom-1 left-1 w-0.5 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full"></div>
-              <div className="absolute top-1 bottom-1 right-1 w-0.5 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full"></div>
-              
-              {/* Center dot */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full"></div>
+        {/* Clean circular background */}
+        <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+          {/* Simple geometric icon - Abstract boxes/inventory */}
+          <div className="relative w-2/3 h-2/3 flex items-center justify-center">
+            {/* Three stacked rectangles representing inventory/stock */}
+            <div className="relative">
+              {/* Bottom rectangle */}
+              <div className="w-4 h-2 bg-white rounded-sm opacity-90"></div>
+              {/* Middle rectangle */}
+              <div className="w-3 h-2 bg-white rounded-sm opacity-75 absolute -top-1.5 left-0.5"></div>
+              {/* Top rectangle */}
+              <div className="w-2 h-2 bg-white rounded-sm opacity-60 absolute -top-3 left-1"></div>
             </div>
-            
-            {/* Floating elements for modern effect */}
-            <div className="absolute -top-1 -right-1 w-1 h-1 bg-white rounded-full animate-pulse"></div>
-            <div className="absolute -bottom-1 -left-1 w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
           </div>
         </div>
         
-        {/* Glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-400 rounded-2xl blur-sm opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10"></div>
+        {/* Subtle glow effect */}
+        <div className="absolute inset-0 bg-slate-600 rounded-full blur-md opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10"></div>
       </div>
 
-      {/* Logo Text */}
+      {/* Clean Logo Text */}
       {showText && (
-        <span className={`font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent ${textSizeClasses[size]} group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-indigo-500 transition-all duration-300`}>
+        <span className={`font-semibold text-slate-800 ${textSizeClasses[size]} group-hover:text-slate-700 transition-colors duration-300`}>
           Restocker
         </span>
       )}
