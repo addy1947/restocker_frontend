@@ -525,7 +525,7 @@ const InStock = () => {
                                                                                             <div className="mt-1 space-y-1 max-h-16 overflow-y-auto">
                                                                                                 {stock.entry.slice(-2).reverse().map((entry, entryIndex) => (
                                                                                                     <div key={entryIndex} className="flex justify-between text-xs text-gray-600">
-                                                                                                        <span>{(entry?.type === 'add') ? 'Added' : 'Used'}: {entry?.usedQty || 0}</span>
+                                                                                                        <span>{(entry?.type === 'add') ? 'Added' : (entry?.type === 'sub') ? 'Used' : 'Activity'}: {entry?.usedQty || 0}</span>
                                                                                                         <span>{entry?.time ? formatDate(entry.time) : 'N/A'}</span>
                                                                                                     </div>
                                                                                                 ))}

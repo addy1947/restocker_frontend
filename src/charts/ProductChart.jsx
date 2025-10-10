@@ -58,11 +58,11 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
         productData.stockEntries.forEach((batch, batchIndex) => {
             if (batch.entry && batch.entry.length > 0) {
                 batch.entry.forEach(entry => {
-                    if (entry.type === 'add' && entry.time) {
+                    if (entry.type === 'add' && entry.time && entry.usedQty) {
                         timelineEntries.push({
                             time: new Date(entry.time),
                             type: 'add',
-                            quantity: entry.usedQty || 0,
+                            quantity: entry.usedQty,
                             batchIndex: batchIndex + 1
                         });
                     }
@@ -90,6 +90,11 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
             quantities.push(productData.totalQuantity);
         }
 
+        // Debug logging
+        console.log('Stock entries found:', timelineEntries);
+        console.log('Labels:', labels);
+        console.log('Quantities:', quantities);
+
         return {
             labels,
             datasets: [
@@ -116,17 +121,18 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
             return { labels: [], datasets: [] };
         }
 
-        // Collect all use entries
+        // Collect all use entries (type 'sub' means subtract/use)
         const usedEntries = [];
         
         productData.stockEntries.forEach((batch, batchIndex) => {
             if (batch.entry && batch.entry.length > 0) {
                 batch.entry.forEach(entry => {
-                    if (entry.type === 'use' && entry.time) {
+                    // Check for 'sub' type (subtract/use)
+                    if (entry.type === 'sub' && entry.time && entry.usedQty) {
                         usedEntries.push({
                             time: new Date(entry.time),
-                            type: 'use',
-                            quantity: entry.usedQty || 0,
+                            type: 'sub',
+                            quantity: entry.usedQty,
                             batchIndex: batchIndex + 1
                         });
                     }
@@ -136,6 +142,10 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
 
         // Sort by time
         usedEntries.sort((a, b) => a.time - b.time);
+
+        // Debug logging
+        console.log('Product:', productData.productName);
+        console.log('Used entries found:', usedEntries);
 
         const labels = usedEntries.map(entry => formatTime(entry.time));
         const quantities = usedEntries.map(entry => entry.quantity);
