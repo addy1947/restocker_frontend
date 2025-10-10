@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import UseStock from '../components/UseStock'
+import StockChart from '../charts/StockChart'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 
@@ -15,6 +16,7 @@ const InStock = () => {
     const [showUseStock, setShowUseStock] = useState(false)
     const [selectedStockForUse, setSelectedStockForUse] = useState(null)
     const [isRefreshing, setIsRefreshing] = useState(false)
+    const [showChart, setShowChart] = useState(false)
 
     const fetchStocks = async (isRefresh = false) => {
         try {
@@ -257,26 +259,47 @@ const InStock = () => {
                     <div className="mb-8">
                         <div className="flex justify-between items-center mb-4">
                             <h1 className="text-3xl font-bold text-gray-900">Items in Stock</h1>
-                            <button
-                                onClick={handleRefresh}
-                                disabled={isRefreshing}
-                                className="inline-flex items-center justify-center px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white text-sm font-medium rounded-lg shadow-sm transition-colors duration-200"
-                            >
-                                <svg
-                                    className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`}
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setShowChart(true)}
+                                    className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors duration-200"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                    />
-                                </svg>
-                                {isRefreshing ? 'Refreshing...' : 'Refresh'}
-                            </button>
+                                    <svg
+                                        className="w-4 h-4 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                        />
+                                    </svg>
+                                    View Chart
+                                </button>
+                                <button
+                                    onClick={handleRefresh}
+                                    disabled={isRefreshing}
+                                    className="inline-flex items-center justify-center px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white text-sm font-medium rounded-lg shadow-sm transition-colors duration-200"
+                                >
+                                    <svg
+                                        className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                        />
+                                    </svg>
+                                    {isRefreshing ? 'Refreshing...' : 'Refresh'}
+                                </button>
+                            </div>
                         </div>
 
                         {/* Filter Buttons */}
@@ -516,6 +539,14 @@ const InStock = () => {
                 }}
                 selectedStock={selectedStockForUse}
                 onStockUpdated={handleStockUpdated}
+            />
+
+            {/* Stock Chart Modal */}
+            <StockChart
+                isOpen={showChart}
+                onClose={() => setShowChart(false)}
+                groupedStocks={groupedStocksArray}
+                products={products}
             />
         </>
     )
