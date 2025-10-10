@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import UseStock from '../components/UseStock'
 import StockChart from '../charts/StockChart'
+import ProductChart from '../charts/ProductChart'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 
@@ -17,6 +18,8 @@ const InStock = () => {
     const [selectedStockForUse, setSelectedStockForUse] = useState(null)
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [showChart, setShowChart] = useState(false)
+    const [showProductChart, setShowProductChart] = useState(false)
+    const [selectedProduct, setSelectedProduct] = useState(null)
 
     const fetchStocks = async (isRefresh = false) => {
         try {
@@ -228,6 +231,11 @@ const InStock = () => {
         setSelectedStockForUse(null)
     }
 
+    const handleOpenProductChart = (group) => {
+        setSelectedProduct(group)
+        setShowProductChart(true)
+    }
+
     if (loading) {
         return (
             <div>
@@ -380,6 +388,9 @@ const InStock = () => {
                                             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Description
                                             </th>
+                                            <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Chart
+                                            </th>
                                             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 
                                             </th>
@@ -417,6 +428,30 @@ const InStock = () => {
                                                         title={group.productDetails.description || 'No description'}>
                                                         {group.productDetails.description || 'No description'}
                                                     </td>
+                                                    <td className="px-4 py-2 text-center">
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleOpenProductChart(group);
+                                                            }}
+                                                            className="inline-flex items-center justify-center p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                                                            title="View Product Chart"
+                                                        >
+                                                            <svg
+                                                                className="w-5 h-5"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 24 24"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={2}
+                                                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                                                />
+                                                            </svg>
+                                                        </button>
+                                                    </td>
                                                     <td className="px-4 py-2 text-xs sm:text-sm text-gray-400">
                                                         <svg
                                                             className={`w-4 h-4 transition-transform duration-200 ${expandedRows.has(group.productId) ? 'rotate-180' : ''
@@ -438,7 +473,7 @@ const InStock = () => {
                                                 {/* Expanded batch details */}
                                                 {expandedRows.has(group.productId) && (
                                                     <tr className="bg-gray-50">
-                                                        <td colSpan={7} className="px-4 py-3">
+                                                        <td colSpan={8} className="px-4 py-3">
                                                             <div className="space-y-3">
                                                                 <h4 className="text-sm font-medium text-gray-700 mb-3">
                                                                     Individual Batches for {group.productName}:
@@ -547,6 +582,16 @@ const InStock = () => {
                 onClose={() => setShowChart(false)}
                 groupedStocks={groupedStocksArray}
                 products={products}
+            />
+
+            {/* Product Chart Modal */}
+            <ProductChart
+                isOpen={showProductChart}
+                onClose={() => {
+                    setShowProductChart(false);
+                    setSelectedProduct(null);
+                }}
+                productData={selectedProduct}
             />
         </>
     )

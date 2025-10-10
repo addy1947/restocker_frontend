@@ -169,7 +169,7 @@ const StockChart = ({ isOpen, onClose, groupedStocks, products }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 backdrop-blur-[40px] flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 backdrop-blur-[10px] flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-2xl w-full max-w-6xl mx-auto max-h-[90vh] flex flex-col">
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-200">
