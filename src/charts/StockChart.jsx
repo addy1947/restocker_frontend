@@ -5,12 +5,13 @@ import {
     LinearScale,
     PointElement,
     LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend,
     Filler
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
 
 // Register Chart.js components
 ChartJS.register(
@@ -18,6 +19,7 @@ ChartJS.register(
     LinearScale,
     PointElement,
     LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend,
@@ -62,15 +64,11 @@ const StockChart = ({ isOpen, onClose, groupedStocks, products }) => {
                 {
                     label: 'Stock Quantity',
                     data: quantities,
-                    fill: true,
-                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                    borderColor: 'rgba(59, 130, 246, 1)',
-                    pointBackgroundColor: backgroundColors,
-                    pointBorderColor: borderColors,
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
-                    tension: 0.4,
-                    borderWidth: 2
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    barThickness: 40
                 }
             ]
         };
@@ -192,7 +190,7 @@ const StockChart = ({ isOpen, onClose, groupedStocks, products }) => {
                 <div className="p-6 flex-1 overflow-auto">
                     {groupedStocks && groupedStocks.length > 0 ? (
                         <div className="h-[500px] w-full">
-                            <Line data={chartData} options={options} />
+                            <Bar data={chartData} options={options} />
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center h-64">
