@@ -46,50 +46,36 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
         });
     };
 
-    // Process stock data to create timeline
+    // Process stock data to show different stock batches
     const stockTimelineData = useMemo(() => {
         if (!productData || !productData.stockEntries) {
             return { labels: [], datasets: [] };
         }
 
-        // Collect all entries with their timestamps and quantities
-        const timelineEntries = [];
-        
-        productData.stockEntries.forEach((batch, batchIndex) => {
-            if (batch.entry && batch.entry.length > 0) {
-                batch.entry.forEach(entry => {
-                    if (entry.type === 'add' && entry.time && entry.usedQty) {
-                        timelineEntries.push({
-                            time: new Date(entry.time),
-                            type: 'add',
-                            quantity: entry.usedQty,
-                            batchIndex: batchIndex + 1
-                        });
-                    }
-                });
-            }
-        });
-
-        // Sort by time
-        timelineEntries.sort((a, b) => a.time - b.time);
-
-        // Show individual stock additions (not cumulative)
+        // Show each stock batch as a separate data point
         const labels = [];
         const quantities = [];
-
-        timelineEntries.forEach(entry => {
-            labels.push(formatTime(entry.time));
-            quantities.push(entry.quantity);
+        
+        productData.stockEntries.forEach((batch, batchIndex) => {
+            // Create label for each batch
+            const batchLabel = `Batch ${batchIndex + 1}`;
+            labels.push(batchLabel);
+            
+            // Use the batch quantity (or calculate from entries if needed)
+            let batchQuantity = batch.quantity || 0;
+            
+            // If no direct quantity, try to calculate from entries
+            if (batchQuantity === 0 && batch.entry && batch.entry.length > 0) {
+                batchQuantity = batch.entry.reduce((sum, entry) => {
+                    return sum + (entry.usedQty || 0);
+                }, 0);
+            }
+            
+            quantities.push(batchQuantity);
         });
 
-        // Add current total as a reference point
-        if (labels.length === 0) {
-            labels.push('Current');
-            quantities.push(productData.totalQuantity);
-        }
-
         // Debug logging
-        console.log('Stock entries found:', timelineEntries);
+        console.log('Stock batches found:', productData.stockEntries);
         console.log('Labels:', labels);
         console.log('Quantities:', quantities);
 
@@ -97,7 +83,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
             labels,
             datasets: [
                 {
-                    label: `Individual Stock Additions (${productData.productDetails.measure})`,
+                    label: `Stock Batches (${productData.productDetails.measure})`,
                     data: quantities,
                     fill: true,
                     backgroundColor: 'rgba(34, 197, 94, 0.2)',
@@ -179,7 +165,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
             },
             title: {
                 display: true,
-                text: `${productData?.productName || 'Product'} - Individual Stock Additions`,
+                text: `${productData?.productName || 'Product'} - Stock Batches`,
                 font: {
                     size: 18,
                     weight: 'bold'
@@ -211,7 +197,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
                 },
                 title: {
                     display: true,
-                    text: `Quantity Added (${productData?.productDetails?.measure || ''})`,
+                    text: `Batch Quantity (${productData?.productDetails?.measure || ''})`,
                     font: {
                         size: 14,
                         weight: 'bold'
@@ -228,7 +214,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
                 },
                 title: {
                     display: true,
-                    text: 'Time',
+                    text: 'Stock Batches',
                     font: {
                         size: 14,
                         weight: 'bold'
@@ -302,7 +288,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
                 },
                 title: {
                     display: true,
-                    text: 'Time',
+                    text: 'Stock Batches',
                     font: {
                         size: 14,
                         weight: 'bold'
