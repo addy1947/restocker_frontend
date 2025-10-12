@@ -85,15 +85,11 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
                 {
                     label: `Stock Batches (${productData.productDetails.measure})`,
                     data: quantities,
-                    fill: true,
-                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                    backgroundColor: 'rgba(34, 197, 94, 0.6)',
                     borderColor: 'rgba(34, 197, 94, 1)',
-                    pointBackgroundColor: 'rgba(34, 197, 94, 1)',
-                    pointBorderColor: '#fff',
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    tension: 0.4,
-                    borderWidth: 2
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    barThickness: 40
                 }
             ]
         };
@@ -239,7 +235,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
             },
             title: {
                 display: true,
-                text: `${productData?.productName || 'Product'} - Usage Timeline`,
+                text: `${productData?.productName || 'Product'} - Stock Batches`,
                 font: {
                     size: 18,
                     weight: 'bold'
@@ -271,7 +267,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
                 },
                 title: {
                     display: true,
-                    text: `Quantity Used (${productData?.productDetails?.measure || ''})`,
+                    text: `Batch Quantity (${productData?.productDetails?.measure || ''})`,
                     font: {
                         size: 14,
                         weight: 'bold'
@@ -364,7 +360,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
                         <div className="h-[500px] w-full">
                             {activeTab === 'stock' ? (
                                 stockTimelineData.labels.length > 0 ? (
-                                    <Line data={stockTimelineData} options={lineChartOptions} />
+                                    <Bar data={stockTimelineData} options={barChartOptions} />
                                 ) : (
                                     <div className="flex flex-col items-center justify-center h-full">
                                         <svg
