@@ -73,19 +73,17 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
         // Sort by time
         timelineEntries.sort((a, b) => a.time - b.time);
 
-        // Calculate cumulative quantity
-        let cumulativeQty = 0;
+        // Show individual stock additions (not cumulative)
         const labels = [];
         const quantities = [];
 
         timelineEntries.forEach(entry => {
-            cumulativeQty += entry.quantity;
             labels.push(formatTime(entry.time));
-            quantities.push(cumulativeQty);
+            quantities.push(entry.quantity);
         });
 
-        // Add current total
-        if (labels.length === 0 || cumulativeQty !== productData.totalQuantity) {
+        // Add current total as a reference point
+        if (labels.length === 0) {
             labels.push('Current');
             quantities.push(productData.totalQuantity);
         }
@@ -99,7 +97,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
             labels,
             datasets: [
                 {
-                    label: `Stock Quantity (${productData.productDetails.measure})`,
+                    label: `Individual Stock Additions (${productData.productDetails.measure})`,
                     data: quantities,
                     fill: true,
                     backgroundColor: 'rgba(34, 197, 94, 0.2)',
@@ -181,7 +179,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
             },
             title: {
                 display: true,
-                text: `${productData?.productName || 'Product'} - Stock Timeline`,
+                text: `${productData?.productName || 'Product'} - Individual Stock Additions`,
                 font: {
                     size: 18,
                     weight: 'bold'
@@ -213,7 +211,7 @@ const ProductChart = ({ isOpen, onClose, productData }) => {
                 },
                 title: {
                     display: true,
-                    text: `Quantity (${productData?.productDetails?.measure || ''})`,
+                    text: `Quantity Added (${productData?.productDetails?.measure || ''})`,
                     font: {
                         size: 14,
                         weight: 'bold'
